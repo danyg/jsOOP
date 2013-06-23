@@ -1,0 +1,72 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script src="../src/jsOOP.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			if(undefined === window.console){
+				alert('Open the console F12 in the major cases.');
+			}else{
+				
+				function MyObject(){
+					this.constructedBy = 'MyObject';
+				}
+				
+				MyObject.prototype = {
+					constructedBy: null,
+					
+					__construct: function(){
+						this.constructedBy = 'MyObject';
+					},
+					sayHello: function(){
+						console.log('Hello World! myConstructor was: ' + this.constructedBy);
+					}
+				};
+				
+				function Animal(){
+					MyObject.apply(this.arguments);
+					this.constructedBy += ' > Animal';
+				}
+				
+				Animal.prototype = Object.create(MyObject.prototype, {
+					sayHello: function(){
+						console.log('Animal Sound!');
+						MyObject.prototype.sayHello.apply(this, arguments);
+					}
+				});
+				
+				function Duck(){
+					Animal.apply(this.arguments);
+					this.constructedBy += ' > Duck';
+				}
+				
+				Duck.prototype = Object.create(Animal.prototype, {
+					sayHello: function(){
+						console.log('CUACK!');
+						Animal.prototype.sayHello.apply(this, arguments);
+					}
+				});
+				
+				var myDuck = new Duck;
+				
+				console.log('myDuck is instance of Duck? ' + ( myDuck instanceof Duck ? 'YES' : 'NO' ));
+				console.log('myDuck is instance of Animal? ' + ( myDuck instanceof Animal ? 'YES' : 'NO' ));
+				console.log('myDuck is instance of MyObject? ' + ( myDuck instanceof MyObject ? 'YES' : 'NO' ));
+				console.log('myDuck is instance of Object? ' + ( myDuck instanceof Object ? 'YES' : 'NO' ));
+				console.log('myDuck is instance of Array? ' + ( myDuck instanceof Array ? 'YES' : 'NO' ));
+				
+				myDuck.sayHello();
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div>Open the console!</div>
+	</body>
+</html>

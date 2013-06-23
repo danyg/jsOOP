@@ -1,0 +1,101 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script src="../src/jsOOP.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			if(undefined === window.console){
+				alert('Open the console F12 in the major cases.');
+			}else{
+				
+				var myNameSpace = {};
+				
+				myNameSpace.liveObj = jsOOP.Class('myObject', {
+					health: null,
+					fatigue: null,
+					sleeping: null,
+					fatigeTimer: null,
+					
+					_construct: function(){
+						this.health = 100;
+						this.fatigue = 0;
+						
+						this.awake();
+					},
+					
+					awake: function(){
+						var me = this;
+						this.sleeping = false;
+						clearInterval(this.fatigeTimer);
+						this.fatigeTimer = setInterval(function(){
+							me.increaseFatigue();
+						}, 1000);
+					},
+					
+					sleep: function(){
+						var me = this;
+						this.sleeping = true;
+						clearInterval(this.fatigeTimer);
+						this.fatigeTimer = setInterval(function(){
+							me.decreaseFatigue:();
+						}, 1000);
+					},
+					
+					increaseFatigue: function(){
+						this.fatigue--;
+						if(this.fatigue <= 0){
+							this.fatigue = 0;
+							this.increaseHealth();
+						}
+					},
+					
+					decreaseFatigue: function(){
+						this.fatigue++;
+						if(this.fatigue >= 100){
+							this.fatigue = 100;
+							this.decreaseHealth();
+						}
+					},
+					
+					decreaseHealth: function(){
+						this.health--;
+						if(this.health <= 0){
+							this.health = 0;
+							this.sleep();
+						}
+					},
+					
+					increaseHealth: function(){
+						this.health++;
+						if(this.health >= 100){
+							this.health=100;
+						}
+					},
+					
+					sayHello: function(){
+						console.log('Hello World!');
+					}
+				});
+				
+				myNameSpace.animal = jsOOP.Class('Animal', {
+					sayHello: function(){
+						
+					}
+				}, myNameSpace.myObject);
+				
+				
+				
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div>Open the console!</div>
+	</body>
+</html>
