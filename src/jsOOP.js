@@ -125,20 +125,18 @@
 		 * @param {Function} ctor A Constructor reference
 		 */
 		fixPrototype: function(ctor){
-			var proto = ctor.prototype;
+			var proto = ctor.prototype,
+				prop,
+				superCtor = ctor.super_ ? ctor.super_ : Object
+			;
 
-			if(ctor.super_){
-				this.inherits(ctor, ctor.super_);
-			}
+			this.inherits(ctor, superCtor);
 
-			ctor.prototype = Object.create(proto, {
-				constructor: {
-					value: ctor,
-					enumerable: false,
-					writable: true,
-					configurable: true
+			for(prop in proto){
+				if(proto.hasOwnProperty(prop)){
+					ctor.prototype[prop] = proto[prop];
 				}
-			});
+			}
 		}
 	};
 
