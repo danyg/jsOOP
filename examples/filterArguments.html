@@ -1,0 +1,112 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script src="../src/jsOOP.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			if(undefined === window.console){
+				alert('Open the console F12 in the major cases.');
+			}else{
+				
+				var myNameSpace = {};
+				
+				myNameSpace.myObject = jsOOP.Class('myObject', {
+					constructedBy: null,
+					
+					__construct: function(){
+						this.constructedBy = 'myObject';
+					},
+					sayHello: function(){
+						console.log('Hello World! myConstructor was: ' + this.constructedBy);
+					}
+				});
+				
+				myNameSpace.Animal = jsOOP.Class('Animal', {
+					__construct: function(){
+						myNameSpace.myObject.prototype.__construct.apply(this, arguments);
+						this.constructedBy += ' > Animal';
+					}
+				}, myNameSpace.myObject);
+
+				myNameSpace.Duck = jsOOP.Class('Duck', {
+					childs: [],
+					__construct: function(){
+						this.childs = [];
+						this.options = {};
+						this.optionsVal = {};
+					},
+					sayHello: function(){
+						console.log('I have ' + this.childs.length + ' childs!');
+					},
+					addChild: function(duck){
+						jsOOP.filterArguments([myNameSpace.Duck], arguments);
+						
+						this.childs.push(duck);
+					},
+					setName: function(name){
+						jsOOP.filterArguments([String], arguments);
+						
+						this.name = name;
+					},
+					setOptions: function(optName, value, cstm){
+						jsOOP.filterArguments([String, '', myNameSpace.Animal], arguments);
+						
+						this.options[optName] = cstm;
+						this.optionsVal[optName] = value;
+					}
+				}, myNameSpace.Animal);
+				
+				
+				var Dad = new myNameSpace.Duck;
+				var child1 = new myNameSpace.Duck;
+				var child2 = new myNameSpace.Duck;
+				var John = new myNameSpace.Duck;
+				var anArray = [1,2,3];
+				
+				try{
+					Dad.addChild(child1);
+					Dad.addChild(child2);
+					Dad.addChild(anArray);
+				}catch(e){
+					console.error( e.message );
+				}
+				
+				Dad.sayHello();
+				
+				try{
+					Dad.setName(33);
+				}catch(e){
+					console.error( e.message );
+				}
+				Dad.setName('33');
+				
+				try{
+					child1.setOptions(['array is wrong here'], 'don\'t care the type of this arg', anArray);
+				}catch(e){
+					console.error( e.message );
+				}
+				
+				child1.setOptions('Dad', 'don\'t care the type of this arg', Dad);
+				child1.setOptions('Brother', 'Bro', child2);
+				child1.setOptions('Uncle', 'Uncle John', John);
+				
+				console.log('All Perfect!');
+				console.log(child1.options);
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div>Open the console!</div>
+		<p>
+			In this example you can see 3 errors on console READ please.<br/>
+			In this example you can see how works the filterArguments method, to ensure that the arguments received are of the type that you need.
+		</p>
+	</body>
+</html>
